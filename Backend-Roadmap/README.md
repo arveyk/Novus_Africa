@@ -15,9 +15,9 @@
 <tr>
 <td></td>
 <td></td>
-<td></td>
 </tr>
 </table>
 
 |FrontEnd  |  BackEnd |
 | :---     |  ---:    |
+| React    |  Nodejs  |
