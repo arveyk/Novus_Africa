@@ -2,7 +2,9 @@ import dbClient
 import redisClient
 
 
-app.route('/files', methods=['POST'], (res, res)) {
+app.route('/files', methods=['POST'], (res, res)) 
+
+function files() (req, res, next) {
   const {
     X-Token,
     name
@@ -16,7 +18,7 @@ app.route('/files', methods=['POST'], (res, res)) {
       );
     }
     const user = dbClient.queryOne(userId=_id);
-    
   }
+  next();    
 
 }

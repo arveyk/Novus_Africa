@@ -4,7 +4,7 @@ import redisClient
 const crypto = require('crypto');
 const sha = require('sha');
 
-function createUser(request, response) {
+function createUser(request, response, next) {
   const { email, password}  = req.parameters;
   if (!email) {
     response.send({'Missing email', 400});
@@ -25,10 +25,11 @@ function createUser(request, response) {
           'message': `New user${newUser.id} with email ${user.email}`,
           status: 200;
   })
+  next();
 
 }
 
-function connect(request, response) {
+function connect(request, response, next) {
   header Authorization Basic auth <Base64 of email>
   const user = db.queryOne(email=email)
   if user.passwd = (<sha1 passwd>) {
@@ -46,9 +47,10 @@ function connect(request, response) {
        });
      )();
   }
+  next();
 }
 
-function disconnect(req, res) {
+function disconnect(req, res, next) {
   //retrieve from header
   const { X-Token } = request.body.params;
   const userID = redis.get(X-Token);
@@ -60,9 +62,10 @@ function disconnect(req, res) {
   redisClient.del(X-Token);
   res.send(status: 204);
   }
+  next();
 }
 
-function getme(req, res) {
+function getme(req, res, next) {
   const { X-Token } = request.body.params;
   if (X-Token) {
     const userID = redisClient.get(X-Token);
@@ -81,5 +84,6 @@ function getme(req, res) {
      }
     }
   }
+  next();
 }
 
