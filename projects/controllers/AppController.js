@@ -1,6 +1,4 @@
 import db
-
-
 getStatus(request, response) {
   // get status
 }
