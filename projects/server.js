@@ -1,22 +1,32 @@
 const express = require("express");
 const app = express()
-const PORT = 5000
+const PORT = process.env["PORT"] || 5000;
 
 // import routes and use
 
 
+//import {} from "routes/index.js";
+
 app.get('/', (request, response) => {
-  response.send('Well, Hello There!')
-})
+  response.send('Well, Hello There!');
+  console.log("Home Tab");
+});
 
-import {} from "routes/index.js";
+app.get('/users', (req, res) => {
+  console.log(`users ${res.status(200).send({'message': 'Hello World'})}`);
+});
 
-const PORT = process.env.get("PORT", 5000);
-//check for PORT value type
-const route = express.route();
+app.post('/login', (req, res) => {
+  res.status(201).send({
+    "message": "hello World"});
+  console.log("Login User");
+});
 
-app.listen(port, () => {
-  console.log(`Find Offers on OfferLeo port ${port}`);
-})
+app.post('/signup', (req, res) => {
+  res.status(204).send({"message": "Signedup Successfully"});
+  console.log("Signed-up Successfully");
+});
 
-app.run(port=PORT)
+app.listen(PORT, () => {
+  console.log(`Find Offers on OfferLeo port ${PORT}`);
+});
