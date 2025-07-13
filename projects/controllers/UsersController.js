@@ -1,8 +1,30 @@
 import db
 import uuid
 import redisClient
-const crypto = require('crypto');
-const sha = require('sha');
+const { createHash } = require('crypto');
+
+function postNew(req, res) {
+  const passwrd = req.body.password;
+  const email = req.body.email;
+
+  if (!passwrd) {
+    res.status(400).send('Missing email');
+  }
+  if (!email) {
+    res.status(400).send('Missing email');
+  }
+  // Query user
+  const user = db.queryOne(email=email);
+  if (user) {
+    res.status(400).send('Already exists');
+  }
+  passwrd = createHash('sha256').update(passwrd).digest('hex);
+  // create user
+  const newUser = db.create(User=email, password=passwrd);
+  res.status(201).send(`New User\
+  ${email} userId:${newUser.id};`
+}
+
 
 function createUser(request, response, next) {
   const { email, password}  = req.parameters;

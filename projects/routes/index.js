@@ -1,37 +1,47 @@
 const express =  require("express");
+const router = express.router();
+
+returnAll
+returnOneByID
+returnByLeastPrice
+returnOneByName
+router("/", methods=["GET"]):
 
 
-@app.route("/", methods=["GET"]):
-{
+
+router('') => {
 	Appcontroller.getStatus();
 }
 
 
-app.route('/stats', methods=["GET"], (request, response) => {
+router.post("/users", (request, response) => {
+  UsersController.postNew(req, res);
+  response.send('user created')
+});
+
+router.get('/stats', (request, response) => {
   AppController.getStats(request, response)
   response.send({
 	  user: `${users}`,
 	  files: `${files}`
 	  status: 200
   });
-}
+});
 
-app.route("/users", methods=["POST"], (request, response) => {
-  UsersController.postNew(req, res);
-  response.send('user created')
-})
+router.get('/connect', (req, res) => {
+  console.log('connect');
+});
 
-app.route('/connect', methods=["GET"]) {
-}
-app.route('/disconnect', methods=["GET"]) {
-}
+router.get('/disconnect', (req, res) => {
+  console.log('disconnect');
+});
 
-app.route('/users/me', methods=["GET"]) {
-}
-app.route('/files', methods=['POST']), (req, res) {
+router. get('/users/me', (req, res) => {
+  console.log('Users/me');
+});
+
+router.post('/files', (req, res) {
   FilesController.postUpload(req, res);
-}) 
-returnAll
-returnOneByID
-returnByLeastPrice
-returnOneByName
+});
+
+export  { router };

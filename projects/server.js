@@ -8,12 +8,13 @@ const PORT = process.env["PORT"] || 5000;
 //import {} from "routes/index.js";
 
 app.get('/', (request, response) => {
-  response.send('Well, Hello There!');
+  response.send('Well, Hello There!\n');
   console.log("Home Tab");
 });
 
 app.get('/users', (req, res) => {
-  console.log(`users ${res.status(200).send({'message': 'Hello World'})}`);
+  console.log('users in database');
+  res.status(200).send('<h1>Hello World</h1>');
 });
 
 app.post('/login', (req, res) => {
