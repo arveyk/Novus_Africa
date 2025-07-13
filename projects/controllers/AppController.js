@@ -11,10 +11,3 @@ getStats(request, response, next) {
   next();
 }
 
-function getConnect(req, res, next) {
-  next();
-}
-
-function getDisconnect(req, res, next) {
-  next();
-}

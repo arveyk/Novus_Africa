@@ -1,6 +1,6 @@
-import db
-import uuid
-import redisClient
+import db;
+import uuid;
+import redisClient;
 const { createHash } = require('crypto');
 
 function postNew(req, res) {
@@ -14,76 +14,20 @@ function postNew(req, res) {
     res.status(400).send('Missing email');
   }
   // Query user
-  const user = db.queryOne(email=email);
+  const user = db.query.findOne({email: email});
   if (user) {
     res.status(400).send('Already exists');
   }
   passwrd = createHash('sha256').update(passwrd).digest('hex);
   // create user
-  const newUser = db.create(User=email, password=passwrd);
+  const statement = 'INSERT INTO users(email, password) VALUES($1, $2) RETURNING*';
+  const values = [email, passwrd]
+  const newUser = await db.users.insertOne({
+    User=email,
+    password=passwrd
+  });
   res.status(201).send(`New User\
-  ${email} userId:${newUser.id};`
-}
-
-
-function createUser(request, response, next) {
-  const { email, password}  = req.parameters;
-  if (!email) {
-    response.send({'Missing email', 400});
-  }
-  if (!password) {
-    response.send({'Missing email', 400});
-  }
-  userInDB = db.queryOne(user.email=email);
-  if (userInDB) {
-    response.send({
-            'message': 'User Already Exists',
-            status: 400
-    })
-  }
-  password.sha1
-  const newUser = db.create.user(email=email, pass=password);
-  response.send({
-          'message': `New user${newUser.id} with email ${user.email}`,
-          status: 200;
-  })
-  next();
-
-}
-
-function connect(request, response, next) {
-  header Authorization Basic auth <Base64 of email>
-  const user = db.queryOne(email=email)
-  if user.passwd = (<sha1 passwd>) {
-    response.send({
-	    'message': 'Unauth',
-	    status: 401
-    });
-  }
-  let token = uuidv4();
-  new_key = `auth_${token}`;
-  if (redisClient.isOpen) {
-     (async () => {
-       await redisClient.set('token', new_key, {
-         EX: (24 * 60 * 60)
-       });
-     )();
-  }
-  next();
-}
-
-function disconnect(req, res, next) {
-  //retrieve from header
-  const { X-Token } = request.body.params;
-  const userID = redis.get(X-Token);
-  if (!userID) {
-    res.send(
-	    "message": 'Unathorized',
-	    status: 401
-    );
-  redisClient.del(X-Token);
-  res.send(status: 204);
-  }
+  ${email} userId:${newUser.id}`);
   next();
 }
 
@@ -92,20 +36,13 @@ function getme(req, res, next) {
   if (X-Token) {
     const userID = redisClient.get(X-Token);
     if (userID) {
-      const user = db.queryOne(userID = userID);
-      response.send({
-        'email': user.email,
-	'id': user._id
-      });
-     else {
-       response.send({
-         'message': 'Unauthorized',
-	 status: 401
-       });
+      const user = dbClient.queryOne(userID = userID);
+      response.send(`email': ${user.email},'id': ${user._id}`);
+    });
+    else {
+      response.status(401).send('message': 'Unauthorized');
 
-     }
     }
-  }
+   }
   next();
 }
-

@@ -1,28 +1,26 @@
-const { MongoClient } = require('mongodb                        ');
+const { MongoClient } = require('mongodb');
+const DB_HOST = process.env["DB_HOST"] ||"localhost";
+const DB_PORT = process.env["DB_PORT"] || 27017;
+const DB_DATABASE = process.env["DB_DATABASE"] || "offerLeo";
 
-
-const DB_HOST = process.env.get["", "localhost"];
-const DB_PORT = process.env.get["", 27017];
-const DB_DATABASE = process.env.get["FILES", "file_mng"];
-
-const url
+const url = 'mongodb://${DB_HOST}:${DB_PORT}';
 
 class DBClient {
   constructor() {
-      let client = mongodb.client(
-        host: DB_HOST,
-        port: DB_PORT,
-        database: DB_DATABASE
-      );
+    const client = new MongoClient(url);
+    (async () => {
+      await client.connect();
+      const db = client.db(DB_DATABASE);
+      const userCollection = db.collection('Users');
+      this.userCollection = userCollection;
+    })();
   }
   isAlive() {
   }
   async nbUsers() {
+   return await this.userCollection.find({}).toArray();
   }
-  async nbFiles() {
-  }
-  
 }
 
-const dbclient = new DBClient();
-export default dbClient();
+const dbClient = new DBClient();
+export default dbClient;

@@ -14,10 +14,10 @@ const waitConnection = () => {
 	}
 	else {
 	  resolve()
-	}, 1000);
-      };
+	}
+      }, 1000);
+    };
       repeatFct();
-    }
   })
 };
 
