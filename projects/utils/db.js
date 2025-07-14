@@ -1,24 +1,29 @@
 const { MongoClient } = require('mongodb');
-const DB_HOST = process.env["DB_HOST"] ||"localhost";
+require('dotenv').config();
+
+const DB_HOST = process.env["DB_HOST"] || "localhost";
 const DB_PORT = process.env["DB_PORT"] || 27017;
 const DB_DATABASE = process.env["DB_DATABASE"] || "offerLeo";
 
-const url = 'mongodb://${DB_HOST}:${DB_PORT}';
+const url = `mongodb://${DB_HOST}:${DB_PORT}`;
 
 class DBClient {
   constructor() {
-    const client = new MongoClient(url);
-    (async () => {
-      await client.connect();
-      const db = client.db(DB_DATABASE);
-      const userCollection = db.collection('Users');
-      this.userCollection = userCollection;
-    })();
+    this.client = new MongoClient(url);
+    this.connect();
   }
+  async connect () {
+      await this.client.connect();
+      this.db = this.client.db(DB_DATABASE);
+      this.nbUsers = this.db.collection('Users');
+  }
+
   isAlive() {
+    return(!this.client.hasBeenClosed);
   }
   async nbUsers() {
-   return await this.userCollection.find({}).toArray();
+	 console.log(this.db);
+    return await this.nbUsers.find({}).toArray();
   }
 }
 
