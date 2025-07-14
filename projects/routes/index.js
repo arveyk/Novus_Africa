@@ -1,22 +1,24 @@
 const express =  require("express");
 const router = express.router();
 
-returnAll
-returnOneByID
-returnByLeastPrice
-returnOneByName
-router("/", methods=["GET"]):
+
+const {
+  postNew,
+  getNew
+} = require('controllers/UsersController.js');
+
+const {
+  getConnect,
+  getDisconnect
+} = require('controllers/AuthController.js');
 
 
+router.post("/users", postNew, (request, response) => {
+  console.log('user created');
+});
 
-router('') => {
-	Appcontroller.getStatus();
-}
-
-
-router.post("/users", (request, response) => {
-  UsersController.postNew(req, res);
-  response.send('user created')
+router.get('/users/me', (req, res) => {
+  console.log('Users/me');
 });
 
 router.get('/stats', (request, response) => {
@@ -34,14 +36,6 @@ router.get('/connect', (req, res) => {
 
 router.get('/disconnect', (req, res) => {
   console.log('disconnect');
-});
-
-router. get('/users/me', (req, res) => {
-  console.log('Users/me');
-});
-
-router.post('/files', (req, res) {
-  FilesController.postUpload(req, res);
 });
 
 export  { router };

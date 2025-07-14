@@ -8,7 +8,7 @@ const PORT = process.env["PORT"] || 5000;
 
 //import {} from "routes/index.js";
 
-
+app.use(express.json());
 app.use(router);
 
 app.get('/', (request, response) => {

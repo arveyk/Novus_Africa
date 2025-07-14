@@ -1,19 +1,37 @@
+const createClient = require('redis').createClient;
+const PORT = 6379;
 
 class RedisClient {
+  isReady = false;
   constructor() {
-    this.
+    console.log(`${require('redis/package.json').version}`);
+    this.client = createClient();
+    this.client.on('error', error => {
+      console.error(`Redis client error:`, error);
+    });
+    this.connect();
+  }
+  
+  async connect() {
+    await this.client.connect();
   }
 
   isAlive() {
+    return this.client.isOpen;
   }
 
-  get(key0) {
+  async get(key0) {
+    return await this.client.get(key0);
   }
 
-  set(key1) {
+  async set(key1, value, duration) {
+    await this.client.set(key1, value, {
+      EX: parseInt(duration), 
+    });
   }
 
-  del(key2) {
+  async del(key2) {
+    await this.client.del(key2);
   }
 }
 
