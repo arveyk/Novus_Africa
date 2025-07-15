@@ -10,7 +10,7 @@ const PORT = process.env["PORT"] || 5000;
 
 app.use(express.json());
 app.use(router);
-
+/*
 app.get('/', (request, response) => {
   response.send('Well, Hello There!\n');
   console.log("Home Tab");
@@ -31,7 +31,7 @@ app.post('/signup', (req, res) => {
   res.status(204).send({"message": "Signedup Successfully"});
   console.log("Signed-up Successfully");
 });
-
+*/
 app.listen(PORT, () => {
   console.log(`Find Offers on OfferLeo port ${PORT}`);
 });

@@ -1,41 +1,42 @@
 const express =  require("express");
-const router = express.router();
+const router = express.Router();
 
 
 const {
-  postNew,
-  getNew
-} = require('controllers/UsersController.js');
+  postNew, getMe
+} = require('../controllers/UsersController.js');
 
 const {
   getConnect,
   getDisconnect
-} = require('controllers/AuthController.js');
+} = require('../controllers/AuthController.js');
 
 
-router.post("/users", postNew, (request, response) => {
-  console.log('user created');
-});
+router.post("/users", postNew);
 
-router.get('/users/me', (req, res) => {
-  console.log('Users/me');
-});
+router.get('/users/me');
 
 router.get('/stats', (request, response) => {
-  AppController.getStats(request, response)
-  response.send({
+  response.status(200).send(JSON.stringify({
 	  user: `${users}`,
 	  files: `${files}`
-	  status: 200
-  });
+  }));
 });
 
 router.get('/connect', (req, res) => {
   console.log('connect');
+  response.status(200).send(JSON.stringify({
+	  user: `${users}`,
+	  files: `${files}`
+  }));
 });
 
 router.get('/disconnect', (req, res) => {
   console.log('disconnect');
+  response.status(200).send(JSON.stringify({
+	  user: `${users}`,
+	  files: `${files}`
+  }));
 });
 
-export  { router };
+module.exports = router;

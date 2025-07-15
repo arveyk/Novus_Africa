@@ -15,6 +15,7 @@ class DBClient {
   async connect () {
       await this.client.connect();
       this.db = this.client.db(DB_DATABASE);
+	  console.log(this.client.db);
       this.nbUsers = this.db.collection('Users');
   }
 
@@ -28,4 +29,4 @@ class DBClient {
 }
 
 const dbClient = new DBClient();
-export default dbClient;
+exports.dbClient = dbClient;
