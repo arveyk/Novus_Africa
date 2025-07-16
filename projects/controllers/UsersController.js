@@ -7,27 +7,27 @@ function postNew(req, res, next) {
   const passwrd = req.body.password;
   const email = req.body.email;
 
-  if (!passwrd) {
-    res.status(400).send('Missing email');
-  }
-  if (!email) {
-    res.status(400).send('Missing email');
-  }
-  // Query user
-  const user = db.query.findOne({email: email});
-  if (user) {
-    res.status(400).send('Already exists');
-  }
-  passwrd = createHash('sha256').update(passwrd).digest('hex');
-  // create user
-  const statement = 'INSERT INTO users(email, password) VALUES($1, $2) RETURNING*';
-  const values = [email, passwrd]
-  const newUser =  db.users.insertOne({
-    User: email,
-    password: passwrd
-  });
-  res.status(201).send(`New User\
-  ${email} userId:${newUser.id}`);
+    if (!passwrd) {
+      res.status(400).send('Missing password');
+    } else if (!email) {
+      res.status(400).send('Missing email');
+    } else {
+    // Query user
+      const user = db.query.findOne({email: email});
+      if (user) {
+        res.status(400).send('Already exists');
+      } else {
+         passwrd = createHash('sha256').update(passwrd).digest('hex');
+       // create user
+          const values = [email, passwrd];
+          const newUser =  db.users.insertOne({
+            User: email,
+            password: passwrd
+          });
+        res.status(201).send(`New User\
+        ${email} userId:${newUser.id}`);
+      }
+    }
   next();
 }
 

@@ -16,10 +16,6 @@ app.get('/', (request, response) => {
   console.log("Home Tab");
 });
 
-app.get('/users', (req, res) => {
-  console.log('users in database');
-  res.status(200).send('<h1>Hello World</h1>');
-});
 
 app.post('/login', (req, res) => {
   res.status(201).send({
@@ -32,6 +28,11 @@ app.post('/signup', (req, res) => {
   console.log("Signed-up Successfully");
 });
 */
+app.get('/', (req, res) => {
+  console.log('users in database');
+  res.status(200).send('<h1>Hello, Welcome to OfferLeo</h1>');
+});
+
 app.listen(PORT, () => {
   console.log(`Find Offers on OfferLeo port ${PORT}`);
 });
