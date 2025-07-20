@@ -8,37 +8,64 @@ const DB_DATABASE = process.env["DB_DATABASE"] || "offerLeo";
 const url = `mongodb://${DB_HOST}:${DB_PORT}`;
 
 class DBClient {
-  constructor(dtbase) {
-    const client = new MongoClient(url);
-      (async () => {
-       try {
-	  await client.connect();
-          const db = client.db(DB_DATABASE);
-          this.userCollection = db.collection('users');
-        } catch (error) {
-         console.error(error);
-       } 
-      })();
-      //this.connect(client).then(console.log).catch(console.error);
-  }
-
-  async connect(cl) {
-      try {
-	await cl.connect();
-        const db = cl.db(DB_DATABASE);
-        this.userCollection = db.collection('users');
-      } catch (error) {
-      console.error(error);
-    }
-
+  constructor () {
+    this.client = new MongoClient(url);
+    this.db = null;
   }
 
   isAlive() {
-    return(this.db);
+    /*if (this.db) {
+      (async () => {
+        try {
+	  this.db.admin().ping();console.log('Connected');
+	  return true;
+	} catch (err) {
+	  console.log(err);
+	  return false;
+	}
+        return true;
+      })();
+    }*/
+    return this.db === null;
   }
+
   async nbUsers() {
-	 console.log(this.db);
-    return await this.userCollection.countDocuments();
+    try {
+      if (!this.db) {
+        await this.client.connect();
+        console.log('nbUsers Connected');
+      }
+
+      this.db = this.client.db(DB_DATABASE);
+      this.userCollection = this.db.collection('users');
+
+      const users =  await this.userCollection.count();
+   //   await this.client.close();
+      
+      return users;
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  async nbProducts() {
+    try {
+      if (!this.db) {
+        await this.client.connect();
+        console.log('nbProducts Connected');
+      } else {
+        this.db = this.client.db(DB_DATABASE);
+        this.productCollection = this.db.collection('products');
+
+        const products =  await this.productCollection.count();
+    //    await this.client.close();
+
+        return products;
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

@@ -11,24 +11,21 @@ const {
   getDisconnect
 } = require('../controllers/AuthController.js');
 
+const {
+  getStatus,
+  getStats
+} = require('../controllers/AppController.js');
 
-router.post("/users", postNew);
 
 router.get('/users/me');
 
-router.get('/stats', (request, response) => {
-  response.status(200).send(JSON.stringify({
-	  user: `${users}`,
-	  files: `${files}`
-  }));
-});
+router.get('/status', getStatus);
 
-router.get('/connect', (req, res) => {
+router.get('/stats', getStats);
+
+router.post("/users", postNew);
+router.get('/connect', getConnect, (request, response) => {
   console.log('connect');
-  response.status(200).send(JSON.stringify({
-	  user: `${users}`,
-	  files: `${files}`
-  }));
 });
 
 router.get('/disconnect', (req, res) => {

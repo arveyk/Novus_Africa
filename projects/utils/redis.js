@@ -2,9 +2,7 @@ const createClient = require('redis').createClient;
 const PORT = 6379;
 
 class RedisClient {
-  isReady = false;
   constructor() {
-    console.log(`${require('redis/package.json').version}`);
     this.client = createClient();
     this.client.on('error', error => {
       console.error(`Redis client error:`, error);
@@ -36,4 +34,4 @@ class RedisClient {
 }
 
 const redisClient = new RedisClient();
-exports.redisClient = redisClient;
+module.exports = redisClient;
