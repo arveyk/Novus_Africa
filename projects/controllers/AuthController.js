@@ -3,18 +3,32 @@ const redisClient = require('../utils/redis');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 
-function getConnect(request, response, next) {
-  const AuthStr = request.get('authorization');
-  
+async function getDisconnect(request, response, next) {
+  //retrieve from header
+  const xtoken = request.headers['x-token'];
+  const userID = await redisClient.get(`auth_${xtoken}`);
+    if (!userID) {
+      console.log("Not key found");
+      return response.status(401).send(JSON.stringify({
+            "message": 'Unathorized',
+      }));
+    }
+  await redisClient.del(`auth_${xtoken}`);
+  response.status(204).send('');
+}
+
+async function getConnect (request, response, next) {
+  console.log(request.headers);
+  if (typeof(request.headers) === undefined) {
+    return response.status(500).send('Missing Header');
+  }
+  const AuthStr = request.headers['authorization'];
   const userCredsHash = AuthStr.split(" ")[1];
   const userCreds = Buffer.from(userCredsHash, 'base64').toString('ascii');
 
   let passwd = userCreds.split(':')[1];	
   const email = userCreds.split(':')[0];	
   passwd = crypto.createHash('sha1').update(passwd).digest('hex');
-
-  (async () => {
-    try {
       await dbClient.client.connect();
       const db = dbClient.client.db('offerLeo');
       const userColl = db.collection('users');
@@ -23,11 +37,8 @@ function getConnect(request, response, next) {
 	      password: passwd
       });
       if (!user) {
-        response.send(JSON.stringify({
-          'message': 'Unauth',
-          status: 401
-	}));
-      } else {
+        return response.status(401).send(JSON.stringify({'message': 'Unauth'}));
+      }
 	let token = uuidv4();
         const new_key = `auth_${token}`;
     
@@ -41,36 +52,9 @@ function getConnect(request, response, next) {
 	} else {
 	  response.status(500).send('Server Error, Redis')
 	}*/
-          await redisClient.set('token', new_key, {
-            EX: (24),
-	    NX: true
-	  });
-          response.status(200).send({
-	    token: token
-	  });
-
-      }
-    } catch (err) {
-      console.log(err);  
-    } 
-  })();
-    next();
-}
-
-function getDisconnect(req, res, next) {
-  //retrieve from header
-  const { XToken } = request.body.params;
-  const userID = redis.get(XToken);
-  if (!userID) {
-    res.status(401).send(JSON.stringify({
-            "message": 'Unathorized',
-            "status": 401
-    }));
-    redisClient.del(XToken);
-  } else {
-    res.status(204).send('status: 204');
-  }
-  next();
+	 const expr = 24 * 60 * 60;
+         await redisClient.set(new_key, user._id.toString(), expr);
+	return response.status(200).send({token: token});
 }
 
 module.exports = {

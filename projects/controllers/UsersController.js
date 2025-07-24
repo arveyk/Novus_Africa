@@ -45,16 +45,16 @@ function getMe(request, response) {
     (async () => {
       try{
 	const key = `auth_${xtoken}`;
-	console.log(key);
+	    // For debugging
+	    console.log(key);
         const userId = await redisClient.get(key);
 	await dbClient.client.connect();
-	const db = dbClient.client.db(dbClient('offerLeo'));
+	const db = dbClient.client.db('offerLeo');
 	const userCollection = db.collection('users');
-
 	const user = await userCollection.findOne({
-	  _id: ObjectId(userId)
+	  _id: new ObjectId(userId)
 	});
-        console.log(user);
+	    // For debugging
 	if (!user) {
 	  response.status(401).send({'error': 'Unauthorized'});
 	} else {
@@ -65,6 +65,7 @@ function getMe(request, response) {
 	}
       } catch(error) {
         console.log(error);
+	response.status(500).send("Server Error Get me");
       }
     })();
   }

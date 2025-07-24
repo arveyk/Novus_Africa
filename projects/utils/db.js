@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-const DB_HOST = process.env["DB_HOST"] || "localhost";
+const DB_HOST = process.env["DB_HOST"] || "0.0.0.0";
 const DB_PORT = parseInt(process.env["DB_PORT"]) || 27017;
 const DB_DATABASE = process.env["DB_DATABASE"] || "offerLeo";
 
@@ -9,7 +9,8 @@ const url = `mongodb://${DB_HOST}:${DB_PORT}`;
 
 class DBClient {
   constructor () {
-    this.client = new MongoClient(url);
+    this.client = new MongoClient(url, {family: 4}
+    );
     this.db = null;
   }
 

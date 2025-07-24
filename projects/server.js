@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express()
 const router = require('./routes/index.js');
-const PORT = process.env["PORT"] || 5000;
+const PORT = process.env["PORT"] || 5050;
 
 // import routes and use
 

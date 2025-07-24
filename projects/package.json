@@ -18,6 +18,7 @@
     "chai-http": "^4.3.0",
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
     "image-thumbnail": "^1.0.10",
     "mime-types": "^2.1.27",
     "mongodb": "^6.17.0",

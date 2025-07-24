@@ -1,6 +1,6 @@
 const express =  require("express");
 const router = express.Router();
-
+const asyncHandler = require('express-async-handler');
 
 const {
   postNew, getMe
@@ -17,23 +17,18 @@ const {
 } = require('../controllers/AppController.js');
 
 
-router.get('/users/me');
+router.get('/users/me', getMe);
 
 router.get('/status', getStatus);
 
 router.get('/stats', getStats);
 
 router.post("/users", postNew);
-router.get('/connect', getConnect, (request, response) => {
-  console.log('connect');
+router.get("/connect", asyncHandler(getConnect), (req, res) => {
+  console.log('Connected');
+  response.send('Connected');
 });
 
-router.get('/disconnect', (req, res) => {
-  console.log('disconnect');
-  response.status(200).send(JSON.stringify({
-	  user: `${users}`,
-	  files: `${files}`
-  }));
-});
+router.get('/disconnect', getDisconnect);
 
 module.exports = router;
