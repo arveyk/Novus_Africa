@@ -30,5 +30,10 @@ router.get("/connect", asyncHandler(getConnect), (req, res) => {
 });
 
 router.get('/disconnect', getDisconnect);
-
+router.post('/admin', (request, response) => {
+  console.log('Loged In');
+  response.status(200).send({
+    "Admin": "Hi Admin, welcome!"
+  });
+});
 module.exports = router;
