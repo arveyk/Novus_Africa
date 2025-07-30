@@ -15,7 +15,10 @@ const {
   getStatus,
   getStats
 } = require('../controllers/AppController.js');
-
+const {
+  getAdmin,
+  postNewAdmin
+} = require("../controllers/AdminController.js");
 
 router.get('/users/me', getMe);
 
@@ -30,10 +33,12 @@ router.get("/connect", asyncHandler(getConnect), (req, res) => {
 });
 
 router.get('/disconnect', getDisconnect);
-router.post('/admin', (request, response) => {
+
+
+router.post('/admin', postNewAdmin, (request, response) => {
+  console.log('New Admin created');
+});
+router.get('/admin/me', getAdmin, (request, response) => {
   console.log('Loged In');
-  response.status(200).send({
-    "Admin": "Hi Admin, welcome!"
-  });
 });
 module.exports = router;

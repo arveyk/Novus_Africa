@@ -30,6 +30,25 @@ class DBClient {
     return this.db === null;
   }
 
+  async nbAdmins() {
+    try {
+      if (!this.db) {
+        await this.client.connect();
+        console.log('nbUsers Connected');
+      }
+
+      this.db = this.client.db(DB_DATABASE);
+      this.AdminCollection = this.db.collection('admins');
+
+      const AdminCount =  await this.AdminCollection.count();
+   //   await this.client.close();
+      
+      return AdminCount;
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
   async nbUsers() {
     try {
       if (!this.db) {
